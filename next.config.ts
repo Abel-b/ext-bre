@@ -8,7 +8,8 @@ const nextConfig: NextConfig = {
   assetPrefix: isProd ? "/ext-bre" : "",
   trailingSlash: true,
   images: {
-    unoptimized: true,
+    loader: "custom",
+    loaderFile: "./src/lib/image-loader.ts",
   },
 };
 
