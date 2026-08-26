@@ -2,17 +2,18 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { LayoutDashboard, Calendar, Scissors, Eye, LogOut } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
 
 export default function AdminSidebar() {
   const { t } = useTranslation();
   const pathname = usePathname();
+  const router = useRouter();
 
   const handleLogout = () => {
     sessionStorage.removeItem("ext2_admin_logged");
-    window.location.href = "/";
+    router.push("/");
   };
 
   const links = [
