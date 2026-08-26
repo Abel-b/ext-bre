@@ -12,10 +12,18 @@ import SalonWalkthrough from "@/components/features/SalonWalkthrough";
 import BookingSystem from "@/components/features/BookingSystem";
 import AtelierMap from "@/components/features/AtelierMap";
 import { useTranslation } from "@/lib/i18n";
+import { getAssetPath } from "@/lib/assets";
+
+interface Particle {
+  x: number;
+  y: number;
+  size: number;
+  delay: number;
+}
 
 export default function HomePage() {
   const { t } = useTranslation();
-  const [particles, setParticles] = useState<{ x: number; y: number; size: number; delay: number }[]>([]);
+  const [particles, setParticles] = useState<Particle[]>([]);
 
   // Generate floating gold dust particles (client side only)
   useEffect(() => {
@@ -59,7 +67,7 @@ export default function HomePage() {
         {/* Parallax Hero Photo */}
         <div className="absolute inset-0 w-full h-full opacity-65 dark:opacity-75">
           <Image
-            src="/images/hero_model.jpg"
+            src={getAssetPath("/images/hero_model.jpg")}
             alt="Couture Hair Extensions Bremen"
             fill
             className="object-cover object-center scale-105"

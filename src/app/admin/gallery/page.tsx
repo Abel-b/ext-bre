@@ -5,6 +5,7 @@ import { db, GalleryItem } from "@/lib/db";
 import { Plus, Trash, Check } from "lucide-react";
 import Image from "next/image";
 import { useTranslation } from "@/lib/i18n";
+import { getAssetPath } from "@/lib/assets";
 
 export default function GalleryCMS() {
   const { t } = useTranslation();
@@ -84,7 +85,7 @@ export default function GalleryCMS() {
               >
                 <div className="relative aspect-[4/3] w-full bg-foreground/5">
                   <Image
-                    src={item.imageUrl}
+                    src={getAssetPath(item.imageUrl)}
                     alt={item.title}
                     fill
                     className="object-cover"

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Coffee, Sun, Sparkles, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/lib/i18n";
+import { getAssetPath } from "@/lib/assets";
 
 interface Hotspot {
   id: number;
@@ -104,7 +105,7 @@ export default function SalonWalkthrough() {
       {/* Immersive Walkthrough Graphic */}
       <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden border border-card-border bg-card-bg glow-gold">
         <Image
-          src="/images/salon_interior.jpg"
+          src={getAssetPath("/images/salon_interior.jpg")}
           alt="Luxury Salon Interior Bremen"
           fill
           className="object-cover pointer-events-none"

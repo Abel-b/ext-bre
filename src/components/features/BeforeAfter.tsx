@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Maximize2, Minimize2, ZoomIn, ZoomOut, Move } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
 import { useTheme } from "@/components/ui/theme-provider";
+import { getAssetPath } from "@/lib/assets";
 
 interface BeforeAfterProps {
   beforeImage?: string;
@@ -118,7 +119,7 @@ export default function BeforeAfter({
           style={{ transform: `scale(${zoomScale})`, transformOrigin: "center", transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)" }}
         >
           <Image
-            src={beforeImage}
+            src={getAssetPath(beforeImage)}
             alt={finalBeforeLabel}
             fill
             className="object-cover"
@@ -142,7 +143,7 @@ export default function BeforeAfter({
           }}
         >
           <Image
-            src={afterImage}
+            src={getAssetPath(afterImage)}
             alt={finalAfterLabel}
             fill
             className="object-cover"

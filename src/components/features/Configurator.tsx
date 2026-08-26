@@ -6,6 +6,7 @@ import { Calendar, Info } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useTranslation } from "@/lib/i18n";
+import { getAssetPath } from "@/lib/assets";
 
 interface HairColor {
   id: string;
@@ -160,7 +161,7 @@ export default function Configurator() {
                 className="absolute inset-0 w-full h-full"
               >
                 <Image
-                  src={selectedColor.imageUrl}
+                  src={getAssetPath(selectedColor.imageUrl)}
                   alt={getLocalizedColorName(selectedColor)}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"

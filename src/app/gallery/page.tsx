@@ -9,6 +9,7 @@ import BeforeAfter from "@/components/features/BeforeAfter";
 import { X, Sliders } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/lib/i18n";
+import { getAssetPath } from "@/lib/assets";
 
 export default function GalleryPage() {
   const { t } = useTranslation();
@@ -91,7 +92,7 @@ export default function GalleryPage() {
             >
               <div className="relative aspect-[3/4] w-full bg-foreground/5 overflow-hidden">
                 <Image
-                  src={item.imageUrl}
+                  src={getAssetPath(item.imageUrl)}
                   alt={item.title}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -144,8 +145,8 @@ export default function GalleryPage() {
               {/* Slider container */}
               <div className="w-full flex-1 flex items-center justify-center my-6">
                 <BeforeAfter
-                  beforeImage={activeItem.beforeUrl || "/images/before_model.jpg"}
-                  afterImage={activeItem.imageUrl}
+                  beforeImage={getAssetPath(activeItem.beforeUrl || "/images/before_model.jpg")}
+                  afterImage={getAssetPath(activeItem.imageUrl)}
                   beforeLabel={t("gallery.before")}
                   afterLabel={t("gallery.after")}
                 />
