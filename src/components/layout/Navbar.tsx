@@ -238,8 +238,8 @@ export default function Navbar() {
                 </div>
                 <div className="flex items-center space-x-2 text-foreground/80">
                   <Phone size={13} className="text-primary shrink-0" />
-                  <a href="tel:01746571715" className="font-semibold text-primary">0174 6571715</a>
-                  <span className="text-[10px] text-foreground/45">(Direct Dial)</span>
+                  <a href="tel:+4942198765432" className="font-semibold text-primary">{t("map.phoneDemo")}</a>
+                  <span className="text-[10px] text-foreground/45">(Hotline • Demo)</span>
                 </div>
               </div>
             </div>

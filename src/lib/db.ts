@@ -88,15 +88,15 @@ const DEFAULT_SERVICES: HairService[] = [
 const DEFAULT_APPOINTMENTS: Appointment[] = [
   {
     id: "apt-1",
-    clientName: "Sophia Werner",
-    clientEmail: "sophia.werner@gmail.com",
-    clientPhone: "+49 176 1234567",
+    clientName: "Atelier Gast (Demo A)",
+    clientEmail: "demo-a@extensions-bremen.de",
+    clientPhone: "+49 421 0000001",
     serviceId: "keratin-bonds",
     serviceName: "Keratin Bond System",
     date: "2026-07-08",
     time: "10:00",
     status: "confirmed",
-    notes: "Client wants subtle warm blonde highlights blended into espresso base. Prefers 50cm length.",
+    notes: "Demo-Buchung: Kunde wünscht 50cm Balayage-Farbanpassung mit warmen Reflexen.",
     hairConfig: {
       length: "50 cm",
       color: "Honey Balayage",
@@ -108,15 +108,15 @@ const DEFAULT_APPOINTMENTS: Appointment[] = [
   },
   {
     id: "apt-2",
-    clientName: "Elena Rostova",
-    clientEmail: "elena.r@yahoo.com",
-    clientPhone: "+49 152 9876543",
+    clientName: "Atelier Gast (Demo B)",
+    clientEmail: "demo-b@extensions-bremen.de",
+    clientPhone: "+49 421 0000002",
     serviceId: "tape-in",
     serviceName: "Invisible Tape-Ins",
     date: "2026-07-09",
     time: "14:30",
     status: "pending",
-    notes: "Requires re-fit of existing tape panels plus 20g extra weight.",
+    notes: "Demo-Buchung: Refit von Tape-Paneelen plus 20g Haarvolumen.",
     hairConfig: {
       length: "40 cm",
       color: "Champagne Blonde",
@@ -128,15 +128,15 @@ const DEFAULT_APPOINTMENTS: Appointment[] = [
   },
   {
     id: "apt-3",
-    clientName: "Sarah Becker",
-    clientEmail: "sbecker@web.de",
-    clientPhone: "+49 171 4433221",
+    clientName: "Atelier Gast (Demo C)",
+    clientEmail: "demo-c@extensions-bremen.de",
+    clientPhone: "+49 421 0000003",
     serviceId: "invisible-weft",
     serviceName: "Invisible Genius Weft",
     date: "2026-07-10",
     time: "09:00",
     status: "confirmed",
-    notes: "First time extensions. Consultation completed. Matching with Rich Espresso tone."
+    notes: "Demo-Buchung: Erstberatung & Farbabstimmung für Weft-Einarbeitung."
   }
 ];
 

@@ -39,19 +39,19 @@ export default function HomePage() {
 
   const reviews = [
     {
-      name: "Katharina S.",
+      name: t("locale") === "de" ? "Atelier-Kundin (Keratin-Bonds)" : "Verified Client (Keratin)",
       text: t("reviews.r1"),
       rating: 5,
       date: t("reviews.r1Date"),
     },
     {
-      name: "Julia M.",
+      name: t("locale") === "de" ? "Atelier-Kundin (Tape-Ins)" : "Verified Client (Tapes)",
       text: t("reviews.r2"),
       rating: 5,
       date: t("reviews.r2Date"),
     },
     {
-      name: "Lena H.",
+      name: t("locale") === "de" ? "Atelier-Kundin (Genius-Tressen)" : "Verified Client (Wefts)",
       text: t("reviews.r3"),
       rating: 5,
       date: t("reviews.r3Date"),
@@ -360,7 +360,7 @@ export default function HomePage() {
       <div className="md:hidden fixed bottom-3 inset-x-4 z-40">
         <div className="bg-background/95 backdrop-blur-2xl border border-card-border p-2 rounded-full shadow-2xl flex items-center justify-between gap-2 glow-gold">
           <a
-            href="tel:01746571715"
+            href="tel:+4942198765432"
             className="p-3 rounded-full border border-card-border text-foreground/80 hover:text-primary flex items-center justify-center shrink-0 min-w-[42px] min-h-[42px] bg-foreground/3"
             aria-label="Direct Call Atelier"
           >

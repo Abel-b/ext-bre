@@ -15,9 +15,9 @@ interface Specialist {
 
 const SPECIALISTS: Specialist[] = [
   { id: "any", name: "Erster freier Experte", roleKey: "Optimizes slot availability" },
-  { id: "elena", name: "Elena Couture", roleKey: "Keratin & Bonding Specialist" },
-  { id: "marina", name: "Marina V.", roleKey: "Invisible Tapes & Color Artistry" },
-  { id: "sophie", name: "Sophie B.", roleKey: "Genius Wefts & Volume Extensions" },
+  { id: "keratin-master", name: "Master Stylist", roleKey: "Keratin & Bonding Specialist" },
+  { id: "tape-artist", name: "Color & Tape Artist", roleKey: "Invisible Tapes & Color Artistry" },
+  { id: "weft-specialist", name: "Volume & Weft Artist", roleKey: "Genius Wefts & Volume Extensions" },
 ];
 
 const TIME_SLOTS = [
@@ -454,6 +454,10 @@ export default function BookingSystem() {
                   )}
                 </button>
               </div>
+
+              <p className="text-[10px] text-foreground/40 font-light italic text-center pt-2">
+                🔒 {t("booking.demoDisclaimer")}
+              </p>
             </motion.div>
           )}
 

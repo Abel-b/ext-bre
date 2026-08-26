@@ -119,7 +119,7 @@ export default function AtelierMap() {
         {/* Action CTAs */}
         <div className="flex flex-col sm:flex-row gap-3 pt-5 border-t border-card-border/50">
           <a
-            href="tel:01746571715"
+            href="tel:+4942198765432"
             className="flex-1 flex items-center justify-center space-x-2 py-3.5 px-4 rounded-full border border-primary text-primary hover:bg-primary hover:text-background text-xs tracking-wider uppercase font-bold transition-all min-h-[46px]"
           >
             <Phone size={13} />
