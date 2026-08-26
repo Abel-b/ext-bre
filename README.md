@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Extensions Bremen — Luxury Digital Flagship
 
-## Getting Started
+An award-winning, editorial web experience for **Extensions Bremen**, a premier luxury hair extensions atelier in Germany. Built from scratch with a high-fashion, minimalist visual language akin to Dior Beauty, Dyson, and Balmain Hair.
 
-First, run the development server:
+---
 
+## ✨ Core Features
+
+- **Adaptive Theme System**: Seamlessly toggle between **Luxury Obsidian** (Dark Mode) and **Ivory Cream** (Light Mode) with premium font parings (*Cormorant Garamond* for headings, *Montserrat* for body text).
+- **Interactive Before/After Slider**: Responsive split-view comparisons with drag actions, fullscreen toggle, and touch support.
+- **Product Configurator**: Customizer tool to design hair setups (length, shade, method, volume), detailing breakdowns and live pricing.
+- **Virtual consultation**: Step-by-step diagnostic questionnaire offering custom method recommendations.
+- **Atelier Hotspots tour**: Interactive map walk of the salon interior layout.
+- **Online Booking System**: Calendar slots reserve flow with automated receipt mocks.
+- **Admin CRM & CMS Dashboards**: Metrics hub, appointment manager, catalog pricing adjusters, and image gallery publisher.
+- **Local Persistence**: State actions (bookings, services, photo filters) are saved to `localStorage`.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js (App Router, Turbopack)
+- **Styling**: Tailwind CSS v4 & custom variables
+- **Language**: TypeScript
+- **Animations**: Framer Motion
+- **Icons**: Lucide React & custom inline SVGs
+- **SEO & Accessibility**: Local Business Schema.org JSON-LD, fully responsive structures, WCAG AA contrast.
+
+---
+
+## 🚀 Getting Started
+
+### 1. Installation
+
+Install project dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Running the Development Server
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Start the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open [http://localhost:3000](http://localhost:3000) inside your web browser.
 
-## Learn More
+### 3. Production Build
 
-To learn more about Next.js, take a look at the following resources:
+Compile the optimized static output:
+```bash
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Verify build output and local routing maps.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🗺️ Workspace Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `src/app/` — App Router routes (`/services`, `/gallery`, `/configurator`, `/consultation`, `/admin`).
+  - `globals.css` — Global CSS variables, scrollbars, and Tailwind v4 themes.
+  - `layout.tsx` — Google fonts loader, page metadata, local business Schema, and theme context.
+- `src/components/`
+  - `ui/` — Theme toggles and context providers.
+  - `layout/` — Floating glassmorphic Navigation bar and editorial Footer.
+  - `features/` — BeforeAfter slider, Consultation quiz, Configurator, Booking panels, and Walkthrough hotspots.
+  - `admin/` — Administrative sidebar backend menus.
+- `src/lib/db.ts` — Mock DB store with localStorage persistence adapters.
+- `public/images/` — Custom generated high-resolution editorial portrait photography.
