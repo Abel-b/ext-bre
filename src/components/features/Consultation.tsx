@@ -129,7 +129,7 @@ export default function Consultation() {
         priceRange = "680€ - 950€";
         duration = t("locale") === "de" ? "2,5 Stunden" : "2.5 Hours";
         details = t("locale") === "de"
-          ? "Eine schonende Weft-Nähechnik kreiert gleichmäßiges, volles Volumen für dichtes Haar – komplett ohne Chemie oder Hitze."
+          ? "Eine schonende Weft-Nähtechnik kreiert gleichmäßiges, volles Volumen für dichtes Haar – komplett ohne Chemie oder Hitze."
           : "A full-bodied genius weft sewing application creates massive, uniform volume across high density hair without chemicals or heat.";
       }
 
@@ -142,7 +142,7 @@ export default function Consultation() {
       setRecommendation({ method, length, priceRange, duration, details });
       setIsAnalyzing(false);
       setStep(6);
-    }, 2000);
+    }, 1500);
   };
 
   const resetConsultation = () => {
@@ -250,26 +250,26 @@ export default function Consultation() {
   const isCurrentStepAnswered = currentStepData ? answers[currentStepData.key] !== "" : true;
 
   return (
-    <div className="w-full max-w-2xl mx-auto bg-card-bg border border-card-border rounded-2xl overflow-hidden glow-gold p-8 md:p-12">
+    <div className="w-full max-w-2xl mx-auto bg-card-bg border border-card-border rounded-3xl overflow-hidden glow-gold p-5 sm:p-8 md:p-12 shadow-xl">
       <AnimatePresence mode="wait">
         {step <= 4 && (
           <motion.div
             key={`step-${step}`}
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 15 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.35, ease: "easeInOut" }}
+            exit={{ opacity: 0, x: -15 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
           >
             {/* Step indicator */}
-            <div className="flex justify-between items-center mb-6">
-              <span className="text-[10px] tracking-widest uppercase font-semibold text-primary">
+            <div className="flex justify-between items-center mb-5">
+              <span className="text-[10px] sm:text-xs tracking-widest uppercase font-bold text-primary">
                 {t("locale") === "de" ? `Frage ${step} von 5` : `Question ${step} of 5`}
               </span>
-              <div className="flex space-x-1">
+              <div className="flex space-x-1.5">
                 {[1, 2, 3, 4, 5].map((s) => (
                   <div
                     key={s}
-                    className={`w-4 h-1 rounded-full transition-colors duration-300 ${
+                    className={`w-5 sm:w-6 h-1.5 rounded-full transition-colors duration-300 ${
                       s <= step ? "bg-primary" : "bg-card-border"
                     }`}
                   />
@@ -277,50 +277,57 @@ export default function Consultation() {
               </div>
             </div>
 
-            <h3 className="text-2xl font-serif mb-2">{t(currentStepData.questionKey)}</h3>
-            <p className="text-xs text-foreground/60 mb-8 font-light">{t(currentStepData.descriptionKey)}</p>
+            <h3 className="text-xl sm:text-2xl font-serif mb-1.5 text-foreground">{t(currentStepData.questionKey)}</h3>
+            <p className="text-xs text-foreground/60 mb-6 font-light">{t(currentStepData.descriptionKey)}</p>
 
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-3">
               {currentStepData.options.map((opt) => {
                 const isSelected = answers[currentStepData.key] === opt.value;
                 return (
                   <button
                     key={opt.value}
                     onClick={() => handleSelectOption(currentStepData.key, opt.value)}
-                    className={`flex flex-col items-start w-full p-5 rounded-xl border text-left cursor-pointer transition-all duration-300 ${
+                    className={`flex items-start justify-between w-full p-4 sm:p-5 rounded-2xl border text-left cursor-pointer transition-all min-h-[56px] ${
                       isSelected
-                        ? "border-primary bg-primary/5 dark:bg-primary/10 shadow-md"
-                        : "border-card-border hover:border-foreground/45 bg-transparent"
+                        ? "border-primary bg-primary/10 shadow-sm"
+                        : "border-card-border hover:border-foreground/40 bg-card-bg"
                     }`}
                   >
-                    <span className={`text-xs font-semibold uppercase tracking-wider ${isSelected ? "text-primary" : "text-foreground"}`}>
-                      {getLocalizedOptionLabel(currentStepData.key, opt.value)}
-                    </span>
-                    <span className="text-[11px] text-foreground/50 font-light mt-1.5 leading-relaxed">
-                      {getLocalizedOptionDesc(currentStepData.key, opt.value)}
-                    </span>
+                    <div className="space-y-1">
+                      <span className={`text-xs font-semibold uppercase tracking-wider block ${isSelected ? "text-primary font-bold" : "text-foreground"}`}>
+                        {getLocalizedOptionLabel(currentStepData.key, opt.value)}
+                      </span>
+                      <span className="text-[11px] text-foreground/55 font-light leading-relaxed block">
+                        {getLocalizedOptionDesc(currentStepData.key, opt.value)}
+                      </span>
+                    </div>
+                    {isSelected && (
+                      <div className="w-5 h-5 rounded-full bg-primary text-background flex items-center justify-center shrink-0 ml-3 mt-0.5 shadow-sm">
+                        <Check size={12} />
+                      </div>
+                    )}
                   </button>
                 );
               })}
             </div>
 
             {/* Nav controls */}
-            <div className="flex justify-between items-center mt-10 pt-6 border-t border-card-border/50">
+            <div className="flex justify-between items-center mt-8 pt-5 border-t border-card-border/50">
               <button
                 onClick={handleBack}
                 disabled={step === 1}
-                className="flex items-center space-x-2 text-xs font-semibold tracking-wider uppercase text-foreground/50 hover:text-foreground disabled:opacity-30 transition-colors cursor-pointer"
+                className="flex items-center space-x-1.5 text-xs font-semibold tracking-wider uppercase text-foreground/50 hover:text-foreground disabled:opacity-25 transition-colors cursor-pointer py-2.5 px-3"
               >
-                <ArrowLeft size={14} />
+                <ArrowLeft size={13} />
                 <span>{t("consultation.back")}</span>
               </button>
               <button
                 onClick={handleNext}
                 disabled={!isCurrentStepAnswered}
-                className="flex items-center space-x-2 px-6 py-3 rounded-full bg-primary text-background text-xs tracking-wider uppercase font-semibold hover:bg-primary-hover disabled:opacity-40 transition-colors cursor-pointer"
+                className="flex items-center space-x-2 px-6 py-3 rounded-full bg-primary text-background text-xs tracking-wider uppercase font-bold hover:bg-primary-hover disabled:opacity-40 transition-all cursor-pointer shadow-md min-h-[44px]"
               >
                 <span>{t("consultation.continue")}</span>
-                <ArrowRight size={14} />
+                <ArrowRight size={13} />
               </button>
             </div>
           </motion.div>
@@ -330,32 +337,32 @@ export default function Consultation() {
         {step === 5 && (
           <motion.div
             key="step-5"
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 15 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.35 }}
+            exit={{ opacity: 0, x: -15 }}
+            transition={{ duration: 0.25 }}
             className="flex flex-col"
           >
-            <div className="flex justify-between items-center mb-6">
-              <span className="text-[10px] tracking-widest uppercase font-semibold text-primary">
+            <div className="flex justify-between items-center mb-5">
+              <span className="text-[10px] sm:text-xs tracking-widest uppercase font-bold text-primary">
                 {t("locale") === "de" ? "Frage 5 von 5" : "Question 5 of 5"}
               </span>
-              <div className="flex space-x-1">
+              <div className="flex space-x-1.5">
                 {[1, 2, 3, 4, 5].map((s) => (
                   <div
                     key={s}
-                    className="w-4 h-1 rounded-full bg-primary"
+                    className="w-5 sm:w-6 h-1.5 rounded-full bg-primary"
                   />
                 ))}
               </div>
             </div>
 
-            <h3 className="text-2xl font-serif mb-2">{t("consultation.q5")}</h3>
-            <p className="text-xs text-foreground/60 mb-8 font-light">
+            <h3 className="text-xl sm:text-2xl font-serif mb-1.5 text-foreground">{t("consultation.q5")}</h3>
+            <p className="text-xs text-foreground/60 mb-6 font-light">
               {t("consultation.q5Desc")}
             </p>
 
-            <div className="relative group border-2 border-dashed border-card-border hover:border-primary/80 transition-colors rounded-xl flex flex-col items-center justify-center p-12 text-center bg-transparent">
+            <div className="relative group border-2 border-dashed border-card-border hover:border-primary/80 transition-colors rounded-2xl flex flex-col items-center justify-center p-8 sm:p-12 text-center bg-foreground/2">
               <input
                 type="file"
                 id="hair-photo"
@@ -365,7 +372,7 @@ export default function Consultation() {
               />
               {uploadedFile ? (
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500 mb-4 border border-emerald-500/20">
+                  <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500 mb-3 border border-emerald-500/20">
                     <Check size={20} />
                   </div>
                   <span className="text-xs font-semibold text-foreground/80">{uploadedFile}</span>
@@ -373,7 +380,7 @@ export default function Consultation() {
                 </div>
               ) : (
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4 border border-primary/20">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-3 border border-primary/20">
                     <Upload size={18} />
                   </div>
                   <span className="text-xs font-semibold text-foreground/80">{t("consultation.uploadSelect")}</span>
@@ -383,27 +390,27 @@ export default function Consultation() {
             </div>
 
             {/* Nav controls */}
-            <div className="flex justify-between items-center mt-10 pt-6 border-t border-card-border/50">
+            <div className="flex justify-between items-center mt-8 pt-5 border-t border-card-border/50">
               <button
                 onClick={handleBack}
-                className="flex items-center space-x-2 text-xs font-semibold tracking-wider uppercase text-foreground/50 hover:text-foreground transition-colors cursor-pointer"
+                className="flex items-center space-x-1.5 text-xs font-semibold tracking-wider uppercase text-foreground/50 hover:text-foreground transition-colors cursor-pointer py-2.5 px-3"
               >
-                <ArrowLeft size={14} />
+                <ArrowLeft size={13} />
                 <span>{t("consultation.back")}</span>
               </button>
               <button
                 onClick={calculateRecommendation}
                 disabled={isAnalyzing}
-                className="flex items-center space-x-2 px-8 py-3.5 rounded-full bg-primary text-background text-xs tracking-wider uppercase font-semibold hover:bg-primary-hover disabled:opacity-40 transition-colors cursor-pointer"
+                className="flex items-center space-x-2 px-6 sm:px-8 py-3 rounded-full bg-primary text-background text-xs tracking-wider uppercase font-bold hover:bg-primary-hover disabled:opacity-40 transition-all cursor-pointer shadow-md min-h-[44px]"
               >
                 {isAnalyzing ? (
                   <>
-                    <RefreshCw size={14} className="animate-spin" />
+                    <RefreshCw size={13} className="animate-spin" />
                     <span>{t("consultation.analyzing")}</span>
                   </>
                 ) : (
                   <>
-                    <Sparkles size={14} />
+                    <Sparkles size={13} />
                     <span>{t("consultation.viewRec")}</span>
                   </>
                 )}
@@ -416,72 +423,72 @@ export default function Consultation() {
         {step === 6 && recommendation && (
           <motion.div
             key="results"
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
             className="flex flex-col text-center"
           >
-            <div className="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-6 border border-primary/25 animate-bounce">
-              <Sparkles size={24} />
+            <div className="w-14 h-14 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4 border border-primary/25 shadow-sm">
+              <Sparkles size={22} />
             </div>
 
-            <span className="editorial-lead text-[10px] text-primary font-bold">
+            <span className="editorial-lead text-[9px] sm:text-[10px] text-primary font-bold">
               {t("locale") === "de" ? "IHR PERSÖNLICHES ERGEBNIS" : "YOUR CUSTOM RECIPE"}
             </span>
-            <h3 className="text-3xl font-serif mt-2 mb-3">{t("consultation.resultsTitle")}</h3>
-            <p className="text-xs text-foreground/60 font-light max-w-md mx-auto mb-10">
+            <h3 className="text-2xl sm:text-3xl font-serif mt-1 mb-2 text-foreground">{t("consultation.resultsTitle")}</h3>
+            <p className="text-xs text-foreground/60 font-light max-w-md mx-auto mb-6 sm:mb-8">
               {t("consultation.resultsDesc")}
             </p>
 
-            {/* Recommendations Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-left mb-10">
-              <div className="border border-card-border p-5 rounded-xl bg-background/50">
-                <span className="text-[10px] tracking-wider uppercase text-foreground/44 font-semibold">
+            {/* Recommendations Responsive Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-left mb-6">
+              <div className="border border-card-border p-4 rounded-2xl bg-card-bg shadow-sm">
+                <span className="text-[9px] tracking-wider uppercase text-foreground/45 font-semibold">
                   {t("consultation.recMethod")}
                 </span>
-                <p className="text-base font-serif font-semibold text-primary mt-1.5">{recommendation.method}</p>
+                <p className="text-base font-serif font-bold text-primary mt-1">{recommendation.method}</p>
               </div>
-              <div className="border border-card-border p-5 rounded-xl bg-background/50">
-                <span className="text-[10px] tracking-wider uppercase text-foreground/44 font-semibold">
+              <div className="border border-card-border p-4 rounded-2xl bg-card-bg shadow-sm">
+                <span className="text-[9px] tracking-wider uppercase text-foreground/45 font-semibold">
                   {t("consultation.recLength")}
                 </span>
-                <p className="text-base font-serif font-semibold text-primary mt-1.5">{recommendation.length}</p>
+                <p className="text-base font-serif font-bold text-primary mt-1">{recommendation.length}</p>
               </div>
-              <div className="border border-card-border p-5 rounded-xl bg-background/50">
-                <span className="text-[10px] tracking-wider uppercase text-foreground/44 font-semibold">
+              <div className="border border-card-border p-4 rounded-2xl bg-card-bg shadow-sm">
+                <span className="text-[9px] tracking-wider uppercase text-foreground/45 font-semibold">
                   {t("consultation.recPrice")}
                 </span>
-                <p className="text-base font-serif font-semibold text-primary mt-1.5">{recommendation.priceRange}</p>
+                <p className="text-base font-serif font-bold text-primary mt-1">{recommendation.priceRange}</p>
               </div>
-              <div className="border border-card-border p-5 rounded-xl bg-background/50">
-                <span className="text-[10px] tracking-wider uppercase text-foreground/44 font-semibold">
+              <div className="border border-card-border p-4 rounded-2xl bg-card-bg shadow-sm">
+                <span className="text-[9px] tracking-wider uppercase text-foreground/45 font-semibold">
                   {t("consultation.recDuration")}
                 </span>
-                <p className="text-base font-serif font-semibold text-primary mt-1.5">{recommendation.duration}</p>
+                <p className="text-base font-serif font-bold text-primary mt-1">{recommendation.duration}</p>
               </div>
             </div>
 
-            <div className="text-left border border-card-border p-5 rounded-xl bg-background/50 mb-10">
-              <span className="text-[10px] tracking-wider uppercase text-foreground/44 font-semibold">
+            <div className="text-left border border-card-border p-4 sm:p-5 rounded-2xl bg-card-bg mb-8 shadow-sm">
+              <span className="text-[9px] tracking-wider uppercase text-foreground/45 font-semibold">
                 {t("consultation.recReason")}
               </span>
-              <p className="text-xs text-foreground/75 leading-relaxed font-light mt-2">
+              <p className="text-xs text-foreground/75 leading-relaxed font-light mt-1.5">
                 {recommendation.details}
               </p>
             </div>
 
             {/* Action buttons */}
-            <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-3">
               <button
                 onClick={resetConsultation}
-                className="flex items-center space-x-2 text-xs font-semibold tracking-wider uppercase text-foreground/50 hover:text-foreground transition-colors py-3 px-6 border border-card-border rounded-full hover:border-foreground/30 w-full sm:w-auto justify-center cursor-pointer"
+                className="flex items-center justify-center space-x-1.5 text-xs font-semibold tracking-wider uppercase text-foreground/60 hover:text-foreground transition-colors py-3.5 px-6 border border-card-border rounded-full hover:border-foreground/30 w-full sm:w-auto min-h-[46px] cursor-pointer"
               >
                 <RefreshCw size={12} />
                 <span>{t("consultation.btnReset")}</span>
               </button>
               <Link
                 href={`/#booking?method=${encodeURIComponent(recommendation.method)}`}
-                className="flex items-center space-x-2 px-8 py-3.5 rounded-full bg-primary text-background text-xs tracking-wider uppercase font-semibold hover:bg-primary-hover shadow-lg hover:shadow-primary/20 transition-all duration-300 w-full sm:w-auto justify-center"
+                className="flex items-center justify-center space-x-2 px-8 py-3.5 rounded-full bg-primary text-background text-xs tracking-wider uppercase font-bold hover:bg-primary-hover shadow-lg hover:shadow-primary/20 transition-all w-full sm:w-auto min-h-[46px]"
               >
                 <Calendar size={13} />
                 <span>{t("consultation.btnBook")}</span>

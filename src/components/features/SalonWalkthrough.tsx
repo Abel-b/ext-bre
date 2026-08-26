@@ -13,6 +13,8 @@ interface Hotspot {
   y: number; // percentage from top
   titleKey: string;
   descKey: string;
+  title?: string;
+  description?: string;
   icon: React.ReactNode;
 }
 
@@ -85,25 +87,27 @@ export default function SalonWalkthrough() {
     return { ...spot, title, description };
   };
 
+  const localizedHotspots = hotspots.map(getLocalizedSpot);
+
   return (
     <div className="w-full max-w-6xl mx-auto flex flex-col items-center">
       {/* Intro */}
-      <div className="text-center mb-8 max-w-xl px-4">
-        <span className="editorial-lead text-xs text-primary font-semibold">
+      <div className="text-center mb-6 sm:mb-8 max-w-xl px-4">
+        <span className="editorial-lead text-[10px] sm:text-xs text-primary font-bold">
           {t("locale") === "de" ? "Virtuelle Tour" : "Virtual Tour"}
         </span>
-        <h3 className="text-3xl font-serif mt-2 mb-4">
+        <h3 className="text-2xl sm:text-3xl font-serif mt-1.5 mb-3 text-foreground">
           {t("locale") === "de" ? "Im Inneren des Ateliers" : "Inside the Atelier"}
         </h3>
         <p className="text-xs text-foreground/60 leading-relaxed font-light">
           {t("locale") === "de"
-            ? "Treten Sie ein in unser exklusives Atelier in Bremen. Jedes Detail wurde entworfen, um Ihnen eine Oase des Luxus zu bieten. Fahren Sie über die Markierungen, um den Raum zu erkunden."
-            : "Step into our flagship studio in Bremen. Every detail is curated to provide an unmatched luxury hair care environment. Hover or tap the glowing circles to explore the space."}
+            ? "Treten Sie ein in unser exklusives Atelier in Bremen. Tippen Sie auf die Markierungen oder Stationen, um den Salon zu erkunden."
+            : "Step into our flagship studio in Bremen. Tap the glowing markers or pills below to explore the space."}
         </p>
       </div>
 
       {/* Immersive Walkthrough Graphic */}
-      <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden border border-card-border bg-card-bg glow-gold">
+      <div className="relative w-full aspect-[4/3] sm:aspect-[16/9] rounded-2xl sm:rounded-3xl overflow-hidden border border-card-border bg-card-bg glow-gold shadow-xl">
         <Image
           src={getAssetPath("/images/salon_interior.jpg")}
           alt="Luxury Salon Interior Bremen"
@@ -114,10 +118,10 @@ export default function SalonWalkthrough() {
         />
 
         {/* Ambient Dark Overlay */}
-        <div className="absolute inset-0 bg-background/10 dark:bg-black/20 transition-colors pointer-events-none" />
+        <div className="absolute inset-0 bg-background/10 dark:bg-black/25 transition-colors pointer-events-none" />
 
         {/* Hotspots */}
-        {hotspots.map(getLocalizedSpot).map((spot) => {
+        {localizedHotspots.map((spot) => {
           const isActive = activeHotspot?.id === spot.id;
 
           return (
@@ -129,9 +133,8 @@ export default function SalonWalkthrough() {
               {/* Pulse Marker */}
               <button
                 onClick={() => setActiveHotspot(isActive ? null : spot)}
-                onMouseEnter={() => setActiveHotspot(spot)}
                 className={`relative flex items-center justify-center w-8 h-8 rounded-full border border-primary bg-background/90 text-primary shadow-2xl transition-all duration-300 z-20 cursor-pointer ${
-                  isActive ? "scale-125 bg-primary text-background" : "hover:scale-115"
+                  isActive ? "scale-125 bg-primary text-background" : "hover:scale-110 active:scale-95"
                 }`}
                 aria-label={`Show info about ${spot.title}`}
               >
@@ -141,7 +144,7 @@ export default function SalonWalkthrough() {
                 </span>
               </button>
 
-              {/* Popup Card */}
+              {/* Desktop/Tablet Popup Card */}
               <AnimatePresence>
                 {isActive && (
                   <motion.div
@@ -149,12 +152,11 @@ export default function SalonWalkthrough() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="absolute bottom-10 left-1/2 -translate-x-1/2 w-64 md:w-80 bg-background/95 border border-card-border p-5 rounded-xl shadow-2xl z-30 glassmorphic"
-                    onMouseLeave={() => setActiveHotspot(null)}
+                    className="hidden sm:block absolute bottom-10 left-1/2 -translate-x-1/2 w-64 md:w-80 bg-background/95 border border-card-border p-5 rounded-2xl shadow-2xl z-30 glassmorphic"
                   >
                     <div className="flex items-center space-x-2.5 mb-2 pb-2 border-b border-card-border/50">
                       {spot.icon}
-                      <h4 className="text-xs tracking-wider uppercase font-semibold text-primary font-sans">
+                      <h4 className="text-xs tracking-wider uppercase font-bold text-primary font-sans">
                         {spot.title}
                       </h4>
                     </div>
@@ -168,6 +170,50 @@ export default function SalonWalkthrough() {
           );
         })}
       </div>
+
+      {/* Mobile Station Selector Pills & Detail Card */}
+      <div className="w-full mt-4 space-y-3">
+        <div className="flex items-center space-x-2 overflow-x-auto pb-1.5 no-scrollbar">
+          {localizedHotspots.map((spot) => {
+            const isActive = activeHotspot?.id === spot.id;
+            return (
+              <button
+                key={spot.id}
+                onClick={() => setActiveHotspot(isActive ? null : spot)}
+                className={`flex items-center space-x-2 px-3.5 py-2 rounded-full border text-[10px] tracking-wider uppercase font-semibold shrink-0 transition-all cursor-pointer ${
+                  isActive
+                    ? "border-primary bg-primary text-background shadow-md"
+                    : "border-card-border text-foreground/70 bg-card-bg hover:border-foreground/30"
+                }`}
+              >
+                <span>{spot.id}.</span>
+                <span>{spot.title}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Mobile Active Station Card */}
+        <AnimatePresence>
+          {activeHotspot && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="sm:hidden border border-card-border p-4 rounded-2xl bg-card-bg glow-gold space-y-1.5 shadow-md"
+            >
+              <div className="flex items-center space-x-2 text-primary font-bold text-xs uppercase tracking-wider">
+                {activeHotspot.icon}
+                <span>{activeHotspot.title}</span>
+              </div>
+              <p className="text-xs text-foreground/75 font-light leading-relaxed">
+                {activeHotspot.description}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
     </div>
   );
 }

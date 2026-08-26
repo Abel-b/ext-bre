@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Sun, Moon, Menu, X, Calendar, Globe } from "lucide-react";
+import { Sun, Moon, Menu, X, Calendar, Globe, Phone, MapPin, Sparkles } from "lucide-react";
 import { useTheme } from "@/components/ui/theme-provider";
 import { useTranslation } from "@/lib/i18n";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
@@ -26,6 +27,18 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Lock body scroll when mobile menu is active
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   const navLinks = [
     { name: t("nav.services"), href: "/services" },
     { name: t("nav.configurator"), href: "/configurator" },
@@ -43,35 +56,35 @@ export default function Navbar() {
   };
 
   // Enforce white text when unscrolled on homepage hero, and theme-adaptive colors elsewhere
-  const isTransparent = !scrolled && pathname === "/";
+  const isTransparent = !scrolled && pathname === "/" && !isOpen;
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isTransparent
-          ? "py-6 bg-transparent"
-          : "py-4 bg-background/80 border-b border-card-border glassmorphic"
+          ? "py-4 md:py-6 bg-transparent"
+          : "py-3 md:py-4 bg-background/90 border-b border-card-border glassmorphic shadow-sm"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 flex items-center justify-between">
         
         {/* Brand Logo */}
         <Link
           href="/"
-          className={`relative group text-2xl font-serif tracking-[0.2em] uppercase font-bold transition-colors duration-300 ${
+          onClick={handleLinkClick}
+          className={`relative group font-serif tracking-[0.18em] uppercase font-bold transition-colors duration-300 ${
             isTransparent ? "text-white" : "text-foreground"
           }`}
           aria-label="Extensions Bremen Home"
         >
-          <span className="relative z-10">Extensions</span>
-          <span className="block text-[10px] tracking-[0.45em] text-primary uppercase font-sans font-light -mt-1 ml-0.5">
+          <span className="text-lg sm:text-xl md:text-2xl font-normal block leading-tight">Extensions</span>
+          <span className="block text-[8px] sm:text-[9px] tracking-[0.45em] text-primary uppercase font-sans font-light -mt-0.5">
             Bremen
           </span>
-          <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover:w-full"></span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-10" aria-label="Desktop menu">
+        <nav className="hidden md:flex items-center space-x-8 lg:space-x-10" aria-label="Desktop menu">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -95,8 +108,8 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Action Controls */}
-        <div className="hidden md:flex items-center space-x-6">
+        {/* Action Controls Desktop */}
+        <div className="hidden md:flex items-center space-x-5 lg:space-x-6">
           
           {/* Language Toggle */}
           <button
@@ -135,14 +148,14 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Mobile Controls */}
-        <div className="flex md:hidden items-center space-x-4">
+        {/* Mobile Touch Controls */}
+        <div className="flex md:hidden items-center space-x-2">
           
           {/* Language Toggle Mobile */}
           <button
             onClick={toggleLanguage}
-            className={`px-2.5 py-1 rounded-full border text-[10px] tracking-wider uppercase font-bold cursor-pointer transition-colors duration-300 ${
-              isTransparent ? "border-white/20 text-white hover:text-white" : "border-card-border text-foreground/80"
+            className={`px-3 py-1.5 rounded-full border text-[10px] tracking-wider uppercase font-bold cursor-pointer transition-colors duration-300 min-h-[38px] flex items-center justify-center ${
+              isTransparent ? "border-white/20 text-white hover:text-white bg-black/20" : "border-card-border text-foreground/80 bg-foreground/5"
             }`}
             aria-label="Toggle language"
           >
@@ -152,74 +165,99 @@ export default function Navbar() {
           {/* Theme Toggle Mobile */}
           <button
             onClick={toggleTheme}
-            className={`p-2 rounded-full border cursor-pointer transition-colors duration-300 ${
-              isTransparent ? "border-white/20 text-white hover:text-white" : "border-card-border text-foreground/80"
+            className={`p-2 rounded-full border cursor-pointer transition-colors duration-300 min-w-[38px] min-h-[38px] flex items-center justify-center ${
+              isTransparent ? "border-white/20 text-white hover:text-white bg-black/20" : "border-card-border text-foreground/80 bg-foreground/5"
             }`}
             aria-label="Toggle theme"
           >
             {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
           </button>
 
-          {/* Burger menu Mobile */}
+          {/* Burger menu Mobile Trigger */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`p-2 rounded-full border cursor-pointer transition-colors duration-300 ${
-              isTransparent ? "border-white/20 text-white hover:text-white" : "border-card-border text-foreground"
+            className={`p-2 rounded-full border cursor-pointer transition-colors duration-300 min-w-[42px] min-h-[42px] flex items-center justify-center ${
+              isOpen
+                ? "border-primary bg-primary text-background"
+                : isTransparent
+                ? "border-white/20 text-white hover:text-white bg-black/20"
+                : "border-card-border text-foreground bg-foreground/5"
             }`}
             aria-expanded={isOpen}
             aria-label="Toggle navigation menu"
           >
-            {isOpen ? <X size={18} /> : <Menu size={18} />}
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
-      <div
-        className={`fixed inset-0 top-[72px] z-40 w-full bg-background border-t border-card-border flex flex-col justify-between p-8 md:hidden transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <nav className="flex flex-col space-y-6" aria-label="Mobile menu">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href;
-            return (
+      {/* Mobile Full-Screen Luxury Drawer Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="fixed inset-x-0 top-[60px] bottom-0 z-40 bg-background/98 backdrop-blur-2xl border-t border-card-border flex flex-col justify-between p-6 overflow-y-auto md:hidden"
+          >
+            {/* Top Navigation Links */}
+            <div className="space-y-6 pt-4">
+              <span className="editorial-lead text-[9px] text-primary font-bold block tracking-[0.25em]">
+                {t("locale") === "de" ? "NAVIGATION & ATELIER" : "NAVIGATION & ATELIER"}
+              </span>
+
+              <nav className="flex flex-col space-y-3" aria-label="Mobile menu links">
+                {navLinks.map((link) => {
+                  const isActive = pathname === link.href;
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={handleLinkClick}
+                      className={`flex items-center justify-between p-3.5 rounded-2xl border transition-all ${
+                        isActive
+                          ? "border-primary/40 bg-primary/10 text-primary font-semibold shadow-sm"
+                          : "border-card-border/50 text-foreground/80 hover:text-foreground bg-foreground/2"
+                      }`}
+                    >
+                      <span className="text-base font-serif tracking-wider uppercase font-medium">
+                        {link.name}
+                      </span>
+                      {isActive && <Sparkles size={14} className="text-primary shrink-0" />}
+                    </Link>
+                  );
+                })}
+              </nav>
+
+              {/* Quick Contact & Address Card on Mobile */}
+              <div className="p-4 rounded-2xl border border-card-border/60 bg-foreground/3 space-y-2.5 text-xs">
+                <div className="flex items-center space-x-2 text-foreground/80">
+                  <MapPin size={13} className="text-primary shrink-0" />
+                  <span className="truncate">Sagerstraße 11, 28757 Bremen-Vegesack</span>
+                </div>
+                <div className="flex items-center space-x-2 text-foreground/80">
+                  <Phone size={13} className="text-primary shrink-0" />
+                  <a href="tel:01746571715" className="font-semibold text-primary">0174 6571715</a>
+                  <span className="text-[10px] text-foreground/45">(Direct Dial)</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Actions (Thumb friendly & fixed above home bar) */}
+            <div className="flex flex-col space-y-3 pt-6 pb-safe border-t border-card-border/60">
               <Link
-                key={link.href}
-                href={link.href}
+                href="/#booking"
                 onClick={handleLinkClick}
-                className={`text-lg font-serif tracking-widest uppercase transition-colors ${
-                  isActive ? "text-primary font-medium" : "text-foreground/80 hover:text-foreground"
-                }`}
+                className="flex items-center justify-center space-x-2 w-full py-4 rounded-full bg-primary text-background text-xs tracking-[0.18em] uppercase font-bold shadow-lg shadow-primary/20 hover:bg-primary-hover transition-all min-h-[50px]"
               >
-                {link.name}
+                <Calendar size={15} />
+                <span>{t("nav.bookNow")}</span>
               </Link>
-            );
-          })}
-        </nav>
-
-        <div className="flex flex-col space-y-4">
-          <button
-            onClick={() => {
-              toggleLanguage();
-              handleLinkClick();
-            }}
-            className="flex items-center justify-center space-x-2 w-full py-4 border border-card-border rounded-full text-foreground font-semibold text-xs tracking-wider uppercase cursor-pointer"
-          >
-            <Globe size={14} />
-            <span>{locale === "de" ? "Switch to English" : "Auf Deutsch wechseln"}</span>
-          </button>
-
-          <Link
-            href="/#booking"
-            onClick={handleLinkClick}
-            className="flex items-center justify-center space-x-2 w-full py-4 rounded-full bg-primary text-background text-sm tracking-[0.15em] uppercase font-semibold"
-          >
-            <Calendar size={16} />
-            <span>{t("nav.bookNow")}</span>
-          </Link>
-        </div>
-      </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

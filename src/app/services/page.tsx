@@ -74,29 +74,29 @@ export default function ServicesPage() {
   const renderServiceSection = (title: string, subtitle: string, list: HairService[], icon: React.ReactNode) => {
     if (list.length === 0) return null;
     return (
-      <div className="space-y-8 pt-10 border-t border-card-border/40 first:border-t-0 first:pt-0">
+      <div className="space-y-6 sm:space-y-8 pt-8 sm:pt-10 border-t border-card-border/40 first:border-t-0 first:pt-0">
         <div className="flex items-center space-x-3">
-          <div className="p-2 border border-primary/25 rounded-full bg-primary/5 text-primary">
+          <div className="p-2.5 border border-primary/25 rounded-full bg-primary/5 text-primary shrink-0">
             {icon}
           </div>
           <div>
-            <h2 className="text-xl font-serif font-bold uppercase tracking-wider text-foreground">{title}</h2>
-            <span className="text-[10px] text-foreground/45 uppercase tracking-widest">{subtitle}</span>
+            <h2 className="text-lg sm:text-xl font-serif font-bold uppercase tracking-wider text-foreground">{title}</h2>
+            <span className="text-[9px] sm:text-[10px] text-foreground/45 uppercase tracking-widest">{subtitle}</span>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 md:gap-8">
           {list.map(getLocalizedService).map((srv) => (
             <div
               key={srv.id}
-              className="border border-card-border rounded-2xl p-6 bg-card-bg glow-gold flex flex-col justify-between"
+              className="border border-card-border rounded-2xl p-5 sm:p-6 bg-card-bg glow-gold flex flex-col justify-between shadow-sm"
             >
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div className="flex justify-between items-start">
-                  <h3 className="text-base font-serif font-semibold text-foreground uppercase tracking-wide">
+                  <h3 className="text-sm sm:text-base font-serif font-semibold text-foreground uppercase tracking-wide">
                     {srv.name}
                   </h3>
-                  <span className="text-base font-bold text-primary shrink-0 ml-4">
+                  <span className="text-sm sm:text-base font-bold text-primary shrink-0 ml-3">
                     {srv.price} €
                   </span>
                 </div>
@@ -105,7 +105,7 @@ export default function ServicesPage() {
                   {srv.description}
                 </p>
 
-                <div className="flex items-center space-x-2 text-[10px] text-foreground/40 font-semibold tracking-wider uppercase border-t border-card-border/50 pt-3">
+                <div className="flex items-center space-x-2 text-[10px] text-foreground/50 font-semibold tracking-wider uppercase border-t border-card-border/50 pt-3">
                   <Clock size={11} className="text-primary" />
                   <span>{t("services.duration")} {srv.duration}</span>
                 </div>
@@ -115,12 +115,12 @@ export default function ServicesPage() {
                 </p>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-card-border/30">
+              <div className="mt-5 sm:mt-6 pt-4 border-t border-card-border/30">
                 <Link
                   href={`/#booking?method=${encodeURIComponent(srv.name)}`}
-                  className="flex items-center justify-center space-x-2 w-full py-2.5 rounded-xl border border-primary hover:bg-primary hover:text-background text-primary text-xs tracking-wider uppercase font-semibold transition-all duration-300"
+                  className="flex items-center justify-center space-x-2 w-full py-3 rounded-xl border border-primary hover:bg-primary hover:text-background text-primary text-xs tracking-wider uppercase font-bold transition-all min-h-[44px]"
                 >
-                  <Calendar size={12} />
+                  <Calendar size={13} />
                   <span>{t("services.ctaBook")}</span>
                 </Link>
               </div>
@@ -134,24 +134,24 @@ export default function ServicesPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1 pt-28 pb-16 px-6 md:px-12 bg-background">
+      <main className="flex-1 pt-24 sm:pt-28 pb-16 px-4 sm:px-6 md:px-12 bg-background">
         
         {/* Intro */}
-        <div className="max-w-xl mx-auto mb-16 text-center">
-          <span className="editorial-lead text-xs text-primary font-semibold">{t("services.tagline")}</span>
-          <h1 className="text-4xl md:text-5xl font-serif mt-2 mb-4 font-light uppercase tracking-wider">
+        <div className="max-w-xl mx-auto mb-10 sm:mb-14 text-center px-2">
+          <span className="editorial-lead text-[10px] sm:text-xs text-primary font-bold">{t("services.tagline")}</span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mt-1.5 mb-3 font-light uppercase tracking-wider text-foreground">
             {t("services.title")}
           </h1>
-          <p className="text-sm text-foreground/60 font-light leading-relaxed">
+          <p className="text-xs sm:text-sm text-foreground/60 font-light leading-relaxed">
             {t("services.desc")}
           </p>
         </div>
 
         {/* Catalog Categories */}
-        <div className="max-w-5xl mx-auto space-y-16">
-          {renderServiceSection(t("services.systems"), t("services.systemsDesc"), extensions, <Sparkles size={16} />)}
-          {renderServiceSection(t("services.styling"), t("services.stylingDesc"), styling, <Scissors size={16} />)}
-          {renderServiceSection(t("services.care"), t("services.careDesc"), care, <Heart size={16} />)}
+        <div className="max-w-5xl mx-auto space-y-12 sm:space-y-16">
+          {renderServiceSection(t("services.systems"), t("services.systemsDesc"), extensions, <Sparkles size={15} />)}
+          {renderServiceSection(t("services.styling"), t("services.stylingDesc"), styling, <Scissors size={15} />)}
+          {renderServiceSection(t("services.care"), t("services.careDesc"), care, <Heart size={15} />)}
         </div>
 
       </main>

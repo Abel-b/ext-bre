@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { Calendar, Info } from "lucide-react";
+import { Calendar, Info, Sparkles, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useTranslation } from "@/lib/i18n";
@@ -141,23 +141,28 @@ export default function Configurator() {
     return tex;
   };
 
+  const bookingHref = `/#booking?method=${encodeURIComponent(getLocalizedMethod(selectedMethod).name)}&length=${selectedLength.value}&color=${encodeURIComponent(getLocalizedColorName(selectedColor))}`;
+
   return (
-    <div className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 p-6 md:p-12 bg-card-bg border border-card-border rounded-3xl glow-gold">
+    <div className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10 p-4 sm:p-6 md:p-12 bg-card-bg border border-card-border rounded-3xl glow-gold pb-28 lg:pb-12">
       
-      {/* Visual Preview Panel (sticky on desktop) */}
-      <div className="lg:col-span-5 flex flex-col justify-between space-y-6 lg:sticky lg:top-28 lg:h-[calc(100vh-180px)]">
+      {/* Visual Preview Panel (Top on mobile, Sticky on desktop) */}
+      <div className="lg:col-span-5 flex flex-col justify-between space-y-5 lg:sticky lg:top-28 lg:h-[calc(100vh-180px)]">
         <div>
-          <span className="editorial-lead text-[10px] text-primary font-bold">{t("configurator.previewTitle")}</span>
-          <h2 className="text-3xl font-serif mt-1 font-medium text-foreground">{t("configurator.previewTitle")}</h2>
+          <div className="flex items-center justify-between">
+            <span className="editorial-lead text-[10px] text-primary font-bold">{t("configurator.previewTitle")}</span>
+            <span className="lg:hidden text-lg font-serif font-bold text-primary">{price} €</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-serif mt-1 font-medium text-foreground">{t("configurator.previewTitle")}</h2>
           
-          <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden border border-card-border mt-4 group">
+          <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden border border-card-border mt-3 group shadow-lg">
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedColor.id}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
+                transition={{ duration: 0.35 }}
                 className="absolute inset-0 w-full h-full"
               >
                 <Image
@@ -165,31 +170,31 @@ export default function Configurator() {
                   alt={getLocalizedColorName(selectedColor)}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 400px"
+                  sizes="(max-width: 1024px) 100vw, 450px"
                   priority
                 />
               </motion.div>
             </AnimatePresence>
 
-            <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent pointer-events-none" />
 
             {/* Spec highlights on image */}
-            <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2 pointer-events-none">
-              <span className="bg-background/80 backdrop-blur-md border border-card-border text-[9px] tracking-wider uppercase font-semibold px-2.5 py-1 rounded-md text-foreground">
+            <div className="absolute bottom-3 left-3 right-3 flex flex-wrap gap-1.5 pointer-events-none">
+              <span className="bg-background/85 backdrop-blur-md border border-card-border text-[9px] tracking-wider uppercase font-semibold px-2 py-0.5 rounded-md text-foreground">
                 {selectedLength.value} cm
               </span>
-              <span className="bg-background/80 backdrop-blur-md border border-card-border text-[9px] tracking-wider uppercase font-semibold px-2.5 py-1 rounded-md text-foreground">
+              <span className="bg-background/85 backdrop-blur-md border border-card-border text-[9px] tracking-wider uppercase font-semibold px-2 py-0.5 rounded-md text-foreground">
                 {selectedVolume.weight}g
               </span>
-              <span className="bg-background/80 backdrop-blur-md border border-card-border text-[9px] tracking-wider uppercase font-semibold px-2.5 py-1 rounded-md text-foreground">
+              <span className="bg-background/85 backdrop-blur-md border border-card-border text-[9px] tracking-wider uppercase font-semibold px-2 py-0.5 rounded-md text-foreground">
                 {getLocalizedTexture(selectedTexture)}
               </span>
             </div>
           </div>
         </div>
 
-        {/* Pricing Summary Card */}
-        <div className="border border-card-border p-5 rounded-2xl bg-background/50">
+        {/* Pricing Summary Card (Desktop) */}
+        <div className="hidden lg:block border border-card-border p-5 rounded-2xl bg-background/50">
           <div className="flex justify-between items-end mb-4">
             <div>
               <span className="text-[10px] tracking-widest uppercase text-foreground/45">{t("configurator.estPrice")}</span>
@@ -210,7 +215,7 @@ export default function Configurator() {
           </div>
 
           <Link
-            href={`/#booking?method=${encodeURIComponent(getLocalizedMethod(selectedMethod).name)}&length=${selectedLength.value}&color=${encodeURIComponent(getLocalizedColorName(selectedColor))}`}
+            href={bookingHref}
             className="flex items-center justify-center space-x-2 w-full mt-5 py-3.5 rounded-xl bg-primary text-background text-xs tracking-wider uppercase font-semibold hover:bg-primary-hover shadow-lg hover:shadow-primary/10 transition-all duration-300"
           >
             <Calendar size={13} />
@@ -220,30 +225,30 @@ export default function Configurator() {
       </div>
 
       {/* Selectors Configuration Panel */}
-      <div className="lg:col-span-7 space-y-9">
+      <div className="lg:col-span-7 space-y-7 sm:space-y-9">
         
         {/* Color Choice */}
         <div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex justify-between items-center mb-2.5">
             <span className="text-xs tracking-wider uppercase font-bold text-foreground">{t("configurator.step1")}</span>
-            <span className="text-xs text-primary font-medium">{getLocalizedColorName(selectedColor)}</span>
+            <span className="text-xs text-primary font-semibold">{getLocalizedColorName(selectedColor)}</span>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
             {COLORS.map((color) => {
               const isSelected = selectedColor.id === color.id;
               return (
                 <button
                   key={color.id}
                   onClick={() => setSelectedColor(color)}
-                  className={`flex items-center space-x-3 p-3.5 border rounded-xl text-left cursor-pointer transition-all ${
-                    isSelected ? "border-primary bg-primary/5" : "border-card-border bg-transparent hover:border-foreground/20"
+                  className={`flex items-center space-x-2.5 p-3 border rounded-xl text-left cursor-pointer transition-all min-h-[46px] ${
+                    isSelected ? "border-primary bg-primary/10 shadow-sm" : "border-card-border bg-card-bg hover:border-foreground/20"
                   }`}
                 >
                   <span
-                    className="w-6 h-6 rounded-full border border-card-border/60 shrink-0"
+                    className="w-5 h-5 rounded-full border border-card-border/60 shrink-0 shadow-inner"
                     style={{ backgroundColor: color.code }}
                   />
-                  <span className="text-[11px] font-semibold text-foreground tracking-wide leading-tight truncate">
+                  <span className="text-[10px] sm:text-[11px] font-semibold text-foreground tracking-wide leading-tight truncate">
                     {getLocalizedColorName(color)}
                   </span>
                 </button>
@@ -254,23 +259,23 @@ export default function Configurator() {
 
         {/* Hair Length Choice */}
         <div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex justify-between items-center mb-2.5">
             <span className="text-xs tracking-wider uppercase font-bold text-foreground">{t("configurator.step2")}</span>
-            <span className="text-xs text-primary font-medium">{selectedLength.value} cm</span>
+            <span className="text-xs text-primary font-semibold">{selectedLength.value} cm</span>
           </div>
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-4 gap-2.5">
             {LENGTHS.map((len) => {
               const isSelected = selectedLength.value === len.value;
               return (
                 <button
                   key={len.value}
                   onClick={() => setSelectedLength(len)}
-                  className={`flex flex-col items-center justify-center p-4 border rounded-xl text-center cursor-pointer transition-all ${
-                    isSelected ? "border-primary bg-primary/5" : "border-card-border bg-transparent hover:border-foreground/20"
+                  className={`flex flex-col items-center justify-center p-3 sm:p-4 border rounded-xl text-center cursor-pointer transition-all min-h-[64px] ${
+                    isSelected ? "border-primary bg-primary/10 shadow-sm" : "border-card-border bg-card-bg hover:border-foreground/20"
                   }`}
                 >
-                  <span className="text-base font-serif font-bold text-foreground">{len.value}</span>
-                  <span className="text-[9px] tracking-wider uppercase text-foreground/45 mt-1">cm</span>
+                  <span className="text-base sm:text-lg font-serif font-bold text-foreground">{len.value}</span>
+                  <span className="text-[9px] tracking-wider uppercase text-foreground/45">cm</span>
                 </button>
               );
             })}
@@ -279,25 +284,25 @@ export default function Configurator() {
 
         {/* Volume Density Choice */}
         <div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex justify-between items-center mb-2.5">
             <span className="text-xs tracking-wider uppercase font-bold text-foreground">{t("configurator.step3")}</span>
-            <span className="text-xs text-primary font-medium">{selectedVolume.weight}g</span>
+            <span className="text-xs text-primary font-semibold">{selectedVolume.weight}g</span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             {VOLUMES.map((vol) => {
               const isSelected = selectedVolume.weight === vol.weight;
               return (
                 <button
                   key={vol.weight}
                   onClick={() => setSelectedVolume(vol)}
-                  className={`flex flex-col items-start p-4 border rounded-xl text-left cursor-pointer transition-all ${
-                    isSelected ? "border-primary bg-primary/5" : "border-card-border bg-transparent hover:border-foreground/20"
+                  className={`flex flex-col items-start p-3.5 sm:p-4 border rounded-xl text-left cursor-pointer transition-all ${
+                    isSelected ? "border-primary bg-primary/10 shadow-sm" : "border-card-border bg-card-bg hover:border-foreground/20"
                   }`}
                 >
                   <span className="text-xs font-semibold text-foreground uppercase tracking-wider">
                     {t(`configurator.${vol.labelKey}`)}
                   </span>
-                  <span className="text-[10px] text-foreground/50 font-light mt-1">{vol.weight}g Package</span>
+                  <span className="text-[10px] text-foreground/50 font-light mt-0.5">{vol.weight}g Package</span>
                 </button>
               );
             })}
@@ -306,26 +311,26 @@ export default function Configurator() {
 
         {/* Method Choice */}
         <div>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex justify-between items-center mb-2.5">
             <span className="text-xs tracking-wider uppercase font-bold text-foreground">{t("configurator.step4")}</span>
-            <span className="text-xs text-primary font-medium">{getLocalizedMethod(selectedMethod).name}</span>
+            <span className="text-xs text-primary font-semibold">{getLocalizedMethod(selectedMethod).name}</span>
           </div>
-          <div className="flex flex-col space-y-3">
+          <div className="flex flex-col space-y-2.5">
             {METHODS.map(getLocalizedMethod).map((m) => {
               const isSelected = selectedMethod.id === m.id;
               return (
                 <button
                   key={m.id}
                   onClick={() => setSelectedMethod(METHODS.find(f => f.id === m.id) || METHODS[0])}
-                  className={`flex flex-col items-start p-5 border rounded-xl text-left cursor-pointer transition-all ${
-                    isSelected ? "border-primary bg-primary/5" : "border-card-border bg-transparent hover:border-foreground/20"
+                  className={`flex flex-col items-start p-4 sm:p-5 border rounded-xl text-left cursor-pointer transition-all ${
+                    isSelected ? "border-primary bg-primary/10 shadow-sm" : "border-card-border bg-card-bg hover:border-foreground/20"
                   }`}
                 >
                   <div className="flex justify-between w-full">
                     <span className="text-xs font-semibold text-foreground uppercase tracking-wider">{m.name}</span>
-                    <span className="text-xs font-semibold text-primary">Base: {m.basePrice}€</span>
+                    <span className="text-xs font-semibold text-primary">Ab {m.basePrice}€</span>
                   </div>
-                  <p className="text-[10px] text-foreground/50 font-light mt-1.5 leading-relaxed">
+                  <p className="text-[10px] sm:text-[11px] text-foreground/60 font-light mt-1 leading-relaxed">
                     {m.description}
                   </p>
                   <div className="flex items-center space-x-1.5 text-[9px] tracking-wider uppercase font-bold text-primary mt-2">
@@ -340,16 +345,16 @@ export default function Configurator() {
 
         {/* Hair Texture Selection */}
         <div>
-          <span className="text-xs tracking-wider uppercase font-bold text-foreground block mb-3">{t("configurator.step5")}</span>
-          <div className="grid grid-cols-3 gap-3">
+          <span className="text-xs tracking-wider uppercase font-bold text-foreground block mb-2.5">{t("configurator.step5")}</span>
+          <div className="grid grid-cols-3 gap-2.5">
             {["Straight", "Body Wave", "Deep Curly"].map((tex) => {
               const isSelected = selectedTexture === tex;
               return (
                 <button
                   key={tex}
                   onClick={() => setSelectedTexture(tex)}
-                  className={`py-3 px-4 border rounded-xl text-center text-xs tracking-wide font-semibold cursor-pointer transition-all ${
-                    isSelected ? "border-primary bg-primary/5 text-primary" : "border-card-border text-foreground/75 bg-transparent hover:border-foreground/20"
+                  className={`py-3 px-2.5 border rounded-xl text-center text-xs tracking-wide font-semibold cursor-pointer transition-all min-h-[44px] ${
+                    isSelected ? "border-primary bg-primary/10 text-primary shadow-sm" : "border-card-border text-foreground/75 bg-card-bg hover:border-foreground/20"
                   }`}
                 >
                   {getLocalizedTexture(tex)}
@@ -359,6 +364,24 @@ export default function Configurator() {
           </div>
         </div>
       </div>
+
+      {/* Floating Bottom Action Bar on Mobile */}
+      <div className="lg:hidden fixed bottom-3 inset-x-4 z-40">
+        <div className="bg-background/95 backdrop-blur-2xl border border-card-border p-2.5 sm:p-3 rounded-2xl shadow-2xl flex items-center justify-between gap-3 glow-gold">
+          <div className="pl-2">
+            <span className="text-[8px] uppercase tracking-wider text-foreground/50 block leading-tight">Geschätzter Preis</span>
+            <div className="text-lg font-serif font-bold text-primary leading-tight">{price} €</div>
+          </div>
+          <Link
+            href={bookingHref}
+            className="flex-1 py-3 px-4 rounded-xl bg-primary text-background text-xs tracking-wider uppercase font-bold text-center flex items-center justify-center space-x-1.5 shadow-md min-h-[44px]"
+          >
+            <Calendar size={13} />
+            <span>{t("configurator.ctaBook")}</span>
+          </Link>
+        </div>
+      </div>
+
     </div>
   );
 }
